@@ -1,54 +1,108 @@
-# Vue Lifecycle - Option API
+# Vue Components - Option API
 
-Ketika aplikasi vue pertama dijalankan (created), maka aplikasi tersebut akan melewati beberapa langkah - langkah inisialisasi atau disebut dengan lifecycle hooks.
+Components memungkinkan kita untuk membagi/split UI menjadi beberapa bagian independen (dan memungkinkan untuk direusable)
 
-## Lifecycle hooks
+## Component in a nutshell
 
-Merupakan sebuah "jendela" untuk melihat bagaimana sebuah library/framework bekerja. Dengan lifecycle hooks kita dapat lebih mengontrol jalannya aplikasi
+![components](./components.png)
 
-![lifecycle](lifecycle.png)
+## Defining a component
 
-Terdapat 4 main events dalam sebuah vue lifecycle:
+Secara umum, suatu component dalam Vue memiliki 3 unsur:
 
-- **creation** => ketika pertama kali aplikasi terbuat
-- **mounting** => ketika DOM pertama kali diinisialisasi
-- **updates** => ketika data terupdate dan dom diupdate
-- **destruction** => ketika aplikasi akan didestroy
+- script
 
-## Demo
+  berisi script vue
 
-### Creation Hooks
+  ```js
+  <script>
+  export default {
+    data() {
+      return {
+        count: 0
+      }
+    }
+  }
+  </script>
+  ```
 
-- `beforeCreate`
+- template
 
-  di dalam lifecycle ini, inisialisasi option api belum ada, sehingga data/state belum bisa diakses/dimanipulasi
+  berisi template html
 
-- `created`
+  ```js
+  <template>
+    <button id="button" @click="count++">You clicked me {{ count }} times.</button>
+  </template>
+  ```
 
-  di dalam lifecycle ini, inisialisasi option api sudah ada, sehingga data/state sudah bisa dimanipulasi, namun DOM belum ada sehingga belum bisa memanipulasi DOM (cocok untuk fetching data)
+- style
 
-### Mounting Hooks
+  berisi css/styling
 
-- `beforeMount`
+  ```css
+  <style>
+    button {
+      padding: 10px;
+    }
+  </style>
+  ```
 
-  di dalam lifecycle ini, data/state sudah ada, namun DOM belum ada. Sama seperti lifecycle `created` namun dijalankan setelahnya
+## Using a component
 
-- `mounted`
+Untuk menggunakan component sebagai `child` di `parent` component, kita harus melakukan step-step sebagai berikut.
 
-  disini data/state sudah ada, dan DOM sudah ada, sehingga bisa dimanipulasi
+1.  import component child di parent
 
-### Updates Hooks
+    ```js
+    import ButtonCounter from "./ButtonCounter.vue";
+    ```
 
-- `beforeUpdate`
+2.  Register/daftarkan child component di `components` di script
 
-  lifecycle ini akan dijalankan ketika state berubah dan DOM _akan_ diupdate
+    ```js
+    export default {
+      data() {
+        return {};
+      },
+      components: {
+        ButtonCounter, // daftarkan disini
+      },
+    };
+    ```
 
-- `updated`
+3.  Pakai child component di template
 
-  lifecycle ini akan dijalankan ketika state berubah dan DOM _sudah_ diupdate
+    ```js
+    <template>
+      <ButtonCounter />
+    </template>
+    ```
+
+## Props & Emit
+
+Untuk berkomunikasi antar component di vue, kita dapat menggunakan emits & props
+
+### Props
+
+Merupakan cara sebuah _parent component_ mengirim state/data ke _child component_
+
+> state yang dikirim bersifat **read-only**
+
+![props](./props.png)
+
+### Emits
+
+Merupakan cara sebuah _child component_ mengirimkan/memberi tahu sebuah **event** ke _parent component_
+
+![emits](./emits.png)
 
 ## References
 
-[Lifecycle Hooks Docs](https://vuejs.org/guide/essentials/lifecycle.html)
+- [components basic](https://vuejs.org/guide/essentials/component-basics.html#defining-a-component)
 
-[Understanding Vue Lifecycle](https://www.digitalocean.com/community/tutorials/vuejs-component-lifecycle)
+- [component registration](https://vuejs.org/guide/components/registration.html)
+
+- [props](https://vuejs.org/guide/components/props.html)
+
+- [emits](https://vuejs.org/guide/components/events.html)
